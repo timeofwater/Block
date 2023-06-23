@@ -6,8 +6,8 @@ using UnityEngine.WSA;
 
 namespace Level {
     public class RunController : MonoBehaviour {
-        public int col = 6; // ÁÐ
-        public int row = 6; // ÐÐ
+        public int col = 6;
+        public int row = 6;
 
         public int[] start = new int[] { 1, 1 };
         public int[] end = new int[] { 3, 4 };
@@ -23,7 +23,7 @@ namespace Level {
         private BlocksLocation _blocksLocation;
         private PathController _pathController;
         private TileLayingController _tileLayingController;
-        private MonsterController _monsterController;
+        private List<Point> _path;
 
         private void Start() {
             _sprites = new Dictionary<BlockType, Sprite>();
@@ -36,13 +36,9 @@ namespace Level {
             _blocksLocation = new BlocksLocation(row, col);
             _pathController = new PathController();
             _tileLayingController = new TileLayingController(tilemap, _sprites);
-            _monsterController = new MonsterController();
+            _path = new List<Point>();
 
             generateLv1();
-        }
-
-        private void Update() {
-            _monsterController.goahead();
         }
 
         private void generateLv1() {
@@ -62,7 +58,15 @@ namespace Level {
 
             Point s = new Point(start[0], start[1]);
             Point e = new Point(end[0], end[1]);
-            List<Point> path = _pathController.highlightPath(_blocksLocation, s, e);
+            _path = _pathController.highlightPath(_blocksLocation, s, e);
+        }
+
+        public BlocksLocation getBlockLocation() {
+            return _blocksLocation;
+        }
+
+        public List<Point> getPath() {
+            return _path;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Level {
         private float _HP;
         private float _speed;
         private bool _isFlying;
-        private Sprite _sprite;
+        private GameObject _gameObject;
 
         private int _originX;
         private int _originY;
@@ -47,8 +47,8 @@ namespace Level {
             _path = new List<Point>();
         }
 
-        public void setSprite(Sprite sprite) {
-            _sprite = sprite;
+        public void setGameObject(GameObject gameObject) {
+            _gameObject = gameObject;
         }
 
         public bool setPoisition(BlocksLocation location, float x, float y) {
@@ -99,9 +99,9 @@ namespace Level {
             }
             else {
                 if ((_x - _nextBlockX) * (_x - _nextBlockX) * (_y - _nextBlockY) * (_y - _nextBlockY) <
-                    MonsterController.tick * _speed * MonsterController.tick * _speed) {
+                    MonsterController.TICK * _speed * MonsterController.TICK * _speed) {
                     _step += 1;
-                    if (_path.Count >= 1 + _step) {
+                    if (_path.Count > 1 + _step) {
                         _originX = _path[_step].x;
                         _originY = _path[_step].y;
                         _nextBlockX = _path[_step + 1].x;
@@ -109,8 +109,11 @@ namespace Level {
                     }
                 }
 
-                _x += (_nextBlockX - _originX) * _speed * MonsterController.tick;
-                _y += (_nextBlockY - _originY) * _speed * MonsterController.tick;
+                float deltaX = (_nextBlockX - _originX) * _speed * MonsterController.TICK;
+                float deltaY = (_nextBlockY - _originY) * _speed * MonsterController.TICK;
+                _x += deltaX;
+                _y += deltaY;
+                _gameObject.transform.Translate(new Vector3(deltaX, deltaY));
                 return true;
             }
         }
