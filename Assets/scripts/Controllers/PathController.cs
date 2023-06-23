@@ -10,10 +10,15 @@ namespace Level {
             Astar2d path = new Astar2d();
             path.initMap(turnBlockToInteneger(location.getMap()), location.getRow());
             List<Point> points = path.GetPath(startP, endP);
+
             Debug.Log("points.Count: " + points.Count);
+
+            string pathLog = "";
             for (int i = 0; i < points.Count; i++) {
-                Debug.Log(i + ":" + points[i].x + ", " + points[i].y);
+                pathLog += "[" + i + "](" + points[i].x + "," + points[i].y + ")  ->";
             }
+
+            Debug.Log(pathLog);
 
             return points;
         }
@@ -23,6 +28,7 @@ namespace Level {
             for (int i = 0; i < blockTypes.GetLength(0); i++) {
                 for (int j = 0; j < blockTypes.GetLength(1); j++) {
                     switch (blockTypes[i, j]) {
+                        case BlockType.EMPTY:
                         case BlockType.STONE:
                             rs[i, j] = 1;
                             break;
