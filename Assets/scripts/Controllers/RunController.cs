@@ -19,40 +19,50 @@ namespace Level {
         public Sprite commonBlock;
         public Sprite stoneBlock;
 
-        private Dictionary<BlockType, Sprite> sprites;
-        private BlocksLocation location;
-        private PathController pathController;
-        private TileLayingController tileLayingController;
+        private Dictionary<BlockType, Sprite> _sprites;
+        private BlocksLocation _blocksLocation;
+        private PathController _pathController;
+        private TileLayingController _tileLayingController;
+        private MonsterController _monsterController;
 
         private void Start() {
-            sprites = new Dictionary<BlockType, Sprite>();
-            sprites.Add(BlockType.OUT, outBlock);
-            sprites.Add(BlockType.IN, inBlock);
-            sprites.Add(BlockType.EMPTY, emptyBlock);
-            sprites.Add(BlockType.COMMON, commonBlock);
-            sprites.Add(BlockType.STONE, stoneBlock);
+            _sprites = new Dictionary<BlockType, Sprite>();
+            _sprites.Add(BlockType.OUT, outBlock);
+            _sprites.Add(BlockType.IN, inBlock);
+            _sprites.Add(BlockType.EMPTY, emptyBlock);
+            _sprites.Add(BlockType.COMMON, commonBlock);
+            _sprites.Add(BlockType.STONE, stoneBlock);
 
-            location = new BlocksLocation(row, col);
-            pathController = new PathController();
-            tileLayingController = new TileLayingController(tilemap, sprites);
+            _blocksLocation = new BlocksLocation(row, col);
+            _pathController = new PathController();
+            _tileLayingController = new TileLayingController(tilemap, _sprites);
+            _monsterController = new MonsterController();
 
             generateLv1();
         }
 
+        private void Update() {
+            _monsterController.goahead();
+        }
+
         private void generateLv1() {
-            location = tileLayingController.lay(location, 1, 2, BlockType.COMMON);
-            location = tileLayingController.lay(location, 2, 2, BlockType.COMMON);
-            location = tileLayingController.lay(location, 3, 2, BlockType.COMMON);
-            location = tileLayingController.lay(location, 3, 3, BlockType.COMMON);
-            location = tileLayingController.lay(location, 3, 4, BlockType.COMMON);
-            location = tileLayingController.lay(location, 4, 3, BlockType.COMMON);
-            location = tileLayingController.lay(location, 4, 4, BlockType.COMMON);
-            location = tileLayingController.generateWall(location);
-            location = tileLayingController.generateOutAndIn(location, start[0], start[1], end[0], end[1]);
+            _blocksLocation = _tileLayingController.lay(_blocksLocation, 1, 2, BlockType.COMMON);
+            _blocksLocation = _tileLayingController.lay(_blocksLocation, 2, 2, BlockType.COMMON);
+            _blocksLocation = _tileLayingController.lay(_blocksLocation, 3, 2, BlockType.COMMON);
+            _blocksLocation = _tileLayingController.lay(_blocksLocation, 3, 3, BlockType.COMMON);
+            _blocksLocation = _tileLayingController.lay(_blocksLocation, 3, 4, BlockType.COMMON);
+            _blocksLocation = _tileLayingController.lay(_blocksLocation, 4, 3, BlockType.COMMON);
+            _blocksLocation = _tileLayingController.lay(_blocksLocation, 4, 4, BlockType.COMMON);
+            _blocksLocation = _tileLayingController.generateWall(_blocksLocation);
+            _blocksLocation = _tileLayingController.generateOutAndIn(_blocksLocation,
+                start[0],
+                start[1],
+                end[0],
+                end[1]);
 
             Point s = new Point(start[0], start[1]);
             Point e = new Point(end[0], end[1]);
-            List<Point> path = pathController.highlightPath(location, s, e);
+            List<Point> path = _pathController.highlightPath(_blocksLocation, s, e);
         }
     }
 }

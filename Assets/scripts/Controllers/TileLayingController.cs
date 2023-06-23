@@ -64,7 +64,7 @@ namespace Level {
         }
 
         /**
-         * <p><br/><b>warning: x,y will -1</b><br/><br/></p>
+         * <p><br/>*<b>warning: x,y will -1</b><br/><br/></p>
          * <p>tile name:<ul>
          * <li>out</li>
          * <li>in</li>
