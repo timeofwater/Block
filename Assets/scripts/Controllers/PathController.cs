@@ -4,24 +4,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Blocks {
-    public class PathController : MonoBehaviour {
-        void Start() {
-            Debug.Log("path is start.");
-            highlightPath();
-        }
-
-        private void Update() {
-        }
-
-        public void highlightPath() {
+namespace Level {
+    public class PathController {
+        public List<Point> highlightPath(BlocksLocation location, Point startP, Point endP) {
             Astar2d path = new Astar2d();
-            path.initMap(new int[2, 2] { { 0, 0 }, { 0, 0 } }, 2);
-            List<Point> points = path.GetPath(new Point(0, 0), new Point(1, 1));
+            path.initMap(turnBlockToInteneger(location.getMap()), location.getRow());
+            List<Point> points = path.GetPath(startP, endP);
             Debug.Log("points.Count: " + points.Count);
             for (int i = 0; i < points.Count; i++) {
                 Debug.Log(i + ":" + points[i].x + ", " + points[i].y);
             }
+
+            return points;
+        }
+
+        private int[,] turnBlockToInteneger(BlockType[,] blockTypes) {
+            int[,] rs = new int[blockTypes.GetLength(0), blockTypes.GetLength(1)];
+            for (int i = 0; i < blockTypes.GetLength(0); i++) {
+                for (int j = 0; j < blockTypes.GetLength(1); j++) {
+                    switch (blockTypes[i, j]) {
+                        case BlockType.STONE:
+                            rs[i, j] = 1;
+                            break;
+                        default:
+                            rs[i, j] = 0;
+                            break;
+                    }
+                }
+            }
+
+            return rs;
         }
     }
 }

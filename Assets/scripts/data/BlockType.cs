@@ -1,4 +1,4 @@
-namespace Blocks
+namespace Level
 {
     public enum BlockType
     {

@@ -2,44 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Blocks;
+using Level;
 
-public class BlocksLocation : MonoBehaviour {
-    public int row = 6; // ÐÐ
-    public int col = 6; // ÁÐ
+public class BlocksLocation {
+    private int _col; // x
+    private int _row; // y
+    private BlockType[,] _typeArray;
 
-    public int[] outBlockLocation = new int[] { 1, 1 };
-    public int[] inBlockLocation = new int[] { 0, 0 };
-
-    private static int _numX;
-    private static int _numY;
-    private static BlockType[,] _typeArray;
-
-    public BlocksLocation() {
-        _numX = col;
-        _numY = row;
+    public BlocksLocation(int row, int col) {
+        _row = row;
+        _col = col;
         _typeArray = new BlockType[row, col];
-        iniSpecialBlocks();
     }
 
-    void Start() {
+    public void setBlockType(int x, int y, BlockType blockType) {
+        _typeArray[x, y] = blockType;
     }
 
-    private void iniSpecialBlocks() {
-        _typeArray[outBlockLocation[0], outBlockLocation[1]] = BlockType.OUT;
-        _typeArray[inBlockLocation[0], inBlockLocation[1]] = BlockType.IN;
-        Debug.Log("reset out and in block.");
+    public int getCol() {
+        return _col;
     }
 
-    public static int getNumX() {
-        return _numX;
+    public int getRow() {
+        return _row;
     }
 
-    public static int getNumY() {
-        return _numY;
-    }
-
-    public static BlockType[,] getTypeArray() {
+    public BlockType[,] getMap() {
         return _typeArray;
     }
 }
